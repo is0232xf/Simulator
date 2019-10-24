@@ -21,7 +21,7 @@ lon = 135.00
 lat = 35.00
 yaw = 0.0
 
-save_status_data(lon, lat, yaw)
-draw_status(lon, lat, yaw)
+save_state_data(lon, lat, yaw)
+draw_state(lon, lat, yaw)
 
 
