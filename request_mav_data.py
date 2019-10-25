@@ -13,7 +13,7 @@ print("Succeeded to connection")
 
 msg = None
 while msg is None:
-    msg = the_connection.mav.request_data_stream_send(the_connection.target_system, the_connection.target_component,
+    the_connection.mav.request_data_stream_send(the_connection.target_system, the_connection.target_component,
                                         mavutil.mavlink.MAV_DATA_STREAM_ALL, 1, 1)
     print(msg)
     time.sleep(1)
