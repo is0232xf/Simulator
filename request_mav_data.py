@@ -16,5 +16,9 @@ while msg is None:
     the_connection.mav.request_data_stream_send(the_connection.target_system, the_connection.target_component,
                                         mavutil.mavlink.MAV_DATA_STREAM_ALL, 1, 1)
     print(msg)
+    print("Channel 1 : ", the_connection.channels['1'])
+    print("Channel 2 : ", the_connection.channels['2'])
+    print("Channel 3 : ", the_connection.channels['3'])
+    print("Channel 4 : ", the_connection.channels['4'])
     time.sleep(1)
 print("Finish")
