@@ -6,19 +6,17 @@ Created on Fri Oct 25 16:54:24 2019
 """
 
 import time
-from pymavlink import mavutil
+from dronekit import connect
 
-the_connection = mavutil.mavlink_connection("udpin:0.0.0.0:14551")
+the_connection = connect("udpin:0.0.0.0:14551", wait_ready=True)
 print("Succeeded to connection")
 
-msg = None
-while msg is None:
-    the_connection.mav.request_data_stream_send(the_connection.target_system, the_connection.target_component,
-                                        mavutil.mavlink.MAV_DATA_STREAM_ALL, 1, 1)
-    print(msg)
-    print("Channel 1 : ", the_connection.channels['1'])
-    print("Channel 2 : ", the_connection.channels['2'])
-    print("Channel 3 : ", the_connection.channels['3'])
-    print("Channel 4 : ", the_connection.channels['4'])
-    time.sleep(1)
+while True:
+	# print("CH0: %s" % the_connection.channels['0'])
+	print("CH3: %s" % the_connection.channels['3'])
+	print("CH4: %s" % the_connection.channels['4'])
+	print("CH5: %s" % the_connection.channels['5'])
+	print("CH6: %s" % the_connection.channels['6'])
+	time.sleep(1)
+
 print("Finish")
