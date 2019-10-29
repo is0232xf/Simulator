@@ -5,10 +5,10 @@ Created on Thu Oct 24 14:43:13 2019
 @author: FujiiChang
 """
 
-#import cv2
 import csv
 import math
 import matplotlib.pyplot as plt
+import numpy as np
 
 theta = 34.9820933 # 緯度
 earth_R = 6378137 # 地球の半径．WGS84の値を用いる
