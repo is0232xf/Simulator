@@ -6,20 +6,23 @@ Created on Thu Oct 24 14:43:13 2019
 """
 
 import csv
+import time
 import math
 import matplotlib.pyplot as plt
 import numpy as np
+from dronwkit import connect
+
+the_connection = connect("udpin:0.0.0.0:14551", wait_ready=True)
+print("Succeeded to connection")
 
 theta = 34.9820933 # 緯度
 earth_R = 6378137 # 地球の半径．WGS84の値を用いる
 ey = 360/(2*math.pi*earth_R) # 緯度単位距離. 1mあたりの度数
 ex = 360/(2*math.pi*earth_R*math.cos(theta*math.pi/180)) # 経度単位距離. 1mあたりの度数
 
-"""
 file = open('state.csv', 'a')
 csvWriter = csv.writer(file)
 csvWriter.writerow(['longitude', 'latitude', 'yaw'])
-"""
 
 def save_state_data(file, lon, lat, yaw):
     csvWriter.writerow([lon, lat, yaw])
@@ -58,20 +61,22 @@ def draw_state(theta, current, target, channels):
     
 if __name__ == "__main__":
     
+    point = the_connection.location.local_frame
+    print(point)
     current_point = np.array([34.982114, 135.963686])
     target_point = np.array([34.982168, 135.963615])
     theta = math.radians(0)
     
     # input channel value 
-    CH5 = 1900
-    CH6 = 1690
+    CH5 = the_connection.channels['5']
+    CH6 = the_connection.channels['6']
     
     channels = np.array([(CH5-1500)*ex/100, (CH6-1500)*ey/100])
 
     current = np.array([current_point[1], current_point[0]])
     target = np.array([target_point[1], target_point[0]])
     
-    # save_state_data(file, current[0], current[1], theta)
+    save_state_data(file, current[0], current[1], theta)
     draw_state(theta, current, target, channels) 
     
     file.close()
