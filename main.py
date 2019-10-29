@@ -22,27 +22,53 @@ csvWriter.writerow(['longitude', 'latitude', 'yaw'])
 def save_state_data(file, lon, lat, yaw):
     csvWriter.writerow([lon, lat, yaw])
 
-def draw_state(current, target):
+def draw_state(theta, current, target, channels):
     c_lon = current[0]
     c_lat = current[1]
     t_lon = target[0]
     t_lat = target[1]
-    plt.xlim([t_lon-12*ex, t_lon+12*ex])
-    plt.ylim([t_lat-8*ey, t_lat+8*ey])
+
+    plt.xlim([t_lon-18*ex, t_lon+18*ex])
+    plt.ylim([t_lat-12*ey, t_lat+12*ey])
     plt.scatter([c_lon], [c_lat])
     plt.scatter([t_lon], [t_lat])
-    plt.arrow(c_lon, c_lat, t_lon-c_lon, t_lat-c_lat, width=0.000001, head_width=0.000005, fc="red")
+    
+    forward_point = np.array([c_lon, c_lat+channels[1]])
+    lateral_point = np.array([c_lon+channels[0], c_lat])
+    synthtic_point = forward_point + lateral_point - current
+    
+    R = np.array([[math.cos(theta), -math.sin(theta)],
+                   [math.sin(theta), math.cos(theta)]])
+    T = np.array([[synthtic_point[0]-c_lon],
+                  [synthtic_point[1]-c_lat]])
+    C = np.array([[c_lon], 
+                  [c_lat]])
+    
+    synthtic_point = R @ T + C
+    #plt.scatter([synthtic_point[0]], [synthtic_point[1]], color="green")
+    #plt.scatter([lateral_point[0]], [lateral_point[1]], color="blue")
+    print(synthtic_point[1][0])
+    plt.arrow(c_lon, c_lat, synthtic_point[0][0]-c_lon, synthtic_point[1][0]-c_lat, width=0.000001, head_width=0.000005, fc="green")
+    #plt.arrow(c_lon, c_lat, new_point[0][0]-c_lon, new_point[1][0]-c_lat, width=0.000001, head_width=0.000005, fc="red")
+    #plt.arrow(c_lon, c_lat, 0, ey*2, width=0.000004, head_width=0.000008, fc="red")
+    #plt.arrow(c_lon, c_lat, ex*2, 0, width=0.000004, head_width=0.000008, fc="blue")
     plt.show()
     
 if __name__ == "__main__":
     
-    current_point = [34.982114, 135.963686, 0.0]
-    target_point = [34.982168, 135.963615]
-
-    current = [current_point[1], current_point[0], current_point[2]]
-    target = [target_point[1], target_point[0]]
+    current_point = np.array([34.982114, 135.963686])
+    target_point = np.array([34.982168, 135.963615])
+    theta = math.radians(0)
     
-    save_state_data(file, current[0], current[1], current[2])
-    draw_state(current, target)
+    CH5 = 1720
+    CH6 = 1690
+    
+    channels = np.array([(CH5-1500)*ex/100, (CH6-1500)*ey/100])
+
+    current = np.array([current_point[1], current_point[0]])
+    target = np.array([target_point[1], target_point[0]])
+    
+    save_state_data(file, current[0], current[1], theta)
+    draw_state(theta, current, target, channels) 
     
     file.close()
