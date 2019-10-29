@@ -39,7 +39,6 @@ def calc_vector(current, channels):
                   [c_lat]])
     
     synthtic_point = R @ T + C
-    print(synthtic_point[1][0])
     return synthtic_point
 
 def draw_state(theta, current, target, channels):
