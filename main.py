@@ -67,25 +67,27 @@ def draw_state(theta, current, target, channels, data_num):
     plt.scatter([t_lon], [t_lat])
     plt.arrow(c_lon, c_lat, synthtic_point[0][0]-c_lon, synthtic_point[1][0]-c_lat, width=0.000001, head_width=0.000005, fc="green")
     plt.show()
+    plt.savefig("plot_data/" + str(date) + "/" + name)
+    plt.clf()
     
 if __name__ == "__main__":
+    while True:
+        point = the_connection.location.local_frame
+        print(point)
+        current_point = np.array([34.982114, 135.963686])
+        target_point = np.array([34.982168, 135.963615])
+        heading = the_connection.attitude.yaw
+        
+        # input channel value 
+        CH5 = the_connection.channels['5']
+        CH6 = the_connection.channels['6']
+        
+        channels = np.array([(CH5-1500)*ex/100, (CH6-1500)*ey/100])
     
-    point = the_connection.location.local_frame
-    print(point)
-    current_point = np.array([34.982114, 135.963686])
-    target_point = np.array([34.982168, 135.963615])
-    theta = math.radians(0)
-    
-    # input channel value 
-    CH5 = the_connection.channels['5']
-    CH6 = the_connection.channels['6']
-    
-    channels = np.array([(CH5-1500)*ex/100, (CH6-1500)*ey/100])
-
-    current = np.array([current_point[1], current_point[0]])
-    target = np.array([target_point[1], target_point[0]])
-    
-    save_state_data(file, current[0], current[1], theta)
-    draw_state(theta, current, target, channels) 
+        current = np.array([current_point[1], current_point[0]])
+        target = np.array([target_point[1], target_point[0]])
+        
+        save_state_data(file, heading, current[0], current[1], CH5, CH6)
+        # draw_state(theta, current, target, channels) 
     
     file.close()
