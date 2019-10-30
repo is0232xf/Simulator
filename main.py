@@ -52,7 +52,8 @@ def calc_vector(current, channels):
     synthtic_point = R @ T + C
     return synthtic_point
 
-def draw_state(theta, current, target, channels):
+def draw_state(theta, current, target, channels, data_num):
+    name = (str(data_num) + ".jpg")
     c_lon = current[0]
     c_lat = current[1]
     t_lon = target[0]
