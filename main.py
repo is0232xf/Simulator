@@ -5,12 +5,14 @@ Created on Thu Oct 24 14:43:13 2019
 @author: FujiiChang
 """
 
+import os
 import csv
 import time
 import math
+import datetime
 import matplotlib.pyplot as plt
 import numpy as np
-from dronwkit import connect
+from dronekit import connect
 
 the_connection = connect("udpin:0.0.0.0:14551", wait_ready=True)
 print("Succeeded to connection")
