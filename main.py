@@ -22,12 +22,18 @@ earth_R = 6378137 # 地球の半径．WGS84の値を用いる
 ey = 360/(2*math.pi*earth_R) # 緯度単位距離. 1mあたりの度数
 ex = 360/(2*math.pi*earth_R*math.cos(theta*math.pi/180)) # 経度単位距離. 1mあたりの度数
 
-file = open('state.csv', 'a')
-csvWriter = csv.writer(file)
-csvWriter.writerow(['longitude', 'latitude', 'yaw'])
+# プログtラム開始時の日時を保持
+detail = datetime.datetime.now()
+date = detail.strftime("%Y_%m_%d_%H_%M_%S")
+# 各フレームの画像を格納するフォルダを作成
+os.makedirs("plot_data/" + date)
 
-def save_state_data(file, lon, lat, yaw):
-    csvWriter.writerow([lon, lat, yaw])
+file = open('./csv/'+ date +'.csv', 'a')
+csvWriter = csv.writer(file)
+csvWriter.writerow(['heading', 'longitude', 'latitude', 'CH5', 'CH6'])
+
+def save_state_data(file, heading, lon, lat, CH5, CH6):
+    csvWriter.writerow([heading, lon, lat, CH5, CH6])
 
 def calc_vector(current, channels):
     c_lon = current[0]
