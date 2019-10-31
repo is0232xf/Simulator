@@ -40,12 +40,12 @@ def calc_vector(current, channels):
     c_lat = current[1]
     forward_point = np.array([c_lon, c_lat+channels[1]])
     lateral_point = np.array([c_lon+channels[0], c_lat])
-    synthtic_point = forward_point + lateral_point - current
+    synthetic_point = forward_point + lateral_point - current
     
     R = np.array([[math.cos(theta), -math.sin(theta)],
                    [math.sin(theta), math.cos(theta)]])
-    T = np.array([[synthtic_point[0]-c_lon],
-                  [synthtic_point[1]-c_lat]])
+    T = np.array([[synthetic_point[0]-c_lon],
+                  [synthetic_point[1]-c_lat]])
     C = np.array([[c_lon], 
                   [c_lat]])
     
@@ -72,7 +72,7 @@ def draw_state(theta, current, target, channels, data_num):
     
 if __name__ == "__main__":
     while True:
-        point = the_connection.location.local_frame
+        point = the_connection.location.global_frame
         print(point)
         current_point = np.array([34.982114, 135.963686])
         target_point = np.array([34.982168, 135.963615])
