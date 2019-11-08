@@ -41,5 +41,6 @@ while True:
         elif diff_deg < -3:
             command = 'r'
         command_send(command)
+    time.sleep(1)
         
         
