@@ -12,6 +12,6 @@ the_connection = mavutil.mavlink_connection('udpin:0.0.0.0:14541')
 print("Succeed to connect")
 
 while True:
-    output = the_connection.messages['SERVO_OUTPUT']
+    output = the_connection.messages['SERVO_OUTPUT_ROW']
     print(output)
     time.sleep(0.5)
