@@ -12,9 +12,9 @@ import math
 import datetime
 import matplotlib.pyplot as plt
 import numpy as np
-from dronekit import connect
+# from dronekit import connect
 
-the_connection = connect("udpin:0.0.0.0:14551", wait_ready=True)
+# the_connection = connect("udpin:0.0.0.0:14551", wait_ready=True)
 print("Succeeded to connection")
 
 theta = 34.9820933 # 緯度
@@ -52,8 +52,8 @@ def calc_vector(current, channels):
     synthtic_point = R @ T + C
     return synthtic_point
 
-def draw_state(theta, current, target, channels, data_num):
-    name = (str(data_num) + ".jpg")
+def draw_state(theta, current, target, channels):
+    # name = (str(data_num) + ".jpg")
     c_lon = current[0]
     c_lat = current[1]
     t_lon = target[0]
@@ -67,27 +67,30 @@ def draw_state(theta, current, target, channels, data_num):
     plt.scatter([t_lon], [t_lat])
     plt.arrow(c_lon, c_lat, synthtic_point[0][0]-c_lon, synthtic_point[1][0]-c_lat, width=0.000001, head_width=0.000005, fc="green")
     plt.show()
-    plt.savefig("plot_data/" + str(date) + "/" + name)
+    # plt.savefig("plot_data/" + str(date) + "/" + name)
     plt.clf()
     
 if __name__ == "__main__":
-    while True:
-        point = the_connection.location.global_frame
-        print(point)
-        current_point = np.array([34.982114, 135.963686])
-        target_point = np.array([34.982168, 135.963615])
-        heading = the_connection.attitude.yaw
-        
-        # input channel value 
-        CH5 = the_connection.channels['5']
-        CH6 = the_connection.channels['6']
-        
-        channels = np.array([(CH5-1500)*ex/100, (CH6-1500)*ey/100])
+    # while True:
+    # point = the_connection.location.global_frame
+    # print(point)
+    current_point = np.array([34.982114, 135.963686])
+    target_point = np.array([34.982168, 135.963615])
+    # heading = the_connection.attitude.yaw
+    heading = 45
     
-        current = np.array([current_point[1], current_point[0]])
-        target = np.array([target_point[1], target_point[0]])
-        
-        save_state_data(file, heading, current[0], current[1], CH5, CH6)
-        # draw_state(theta, current, target, channels) 
+    # input channel value 
+    CH5 = 1300
+    CH6 = 1600
+    # CH5 = the_connection.channels['5']
+    # CH6 = the_connection.channels['6']
+    
+    channels = np.array([(CH5-1500)*ex/100, (CH6-1500)*ey/100])
+
+    current = np.array([current_point[1], current_point[0]])
+    target = np.array([target_point[1], target_point[0]])
+    
+    save_state_data(file, heading, current[0], current[1], CH5, CH6)
+    draw_state(theta, current, target, channels) 
     
     file.close()
