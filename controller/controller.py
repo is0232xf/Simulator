@@ -8,6 +8,7 @@ Created on Thu Nov  7 16:54:01 2019
 import time
 import math
 import calculate_angle
+import send_command
 import numpy as np
 import calculate_degree as cal_deg
 from ArduPilotDriver import ArduPilotDriver
@@ -35,12 +36,11 @@ while True:
         diff_deg = math.radians(diff_deg)
         diff_deg = math.degrees(calculate_angle.limit_angle(diff_deg))
         if 3 > abs(diff_deg):
-            command = 's'
+            send_command.set_rc_channel_pwm(5, 1700)
         elif diff_deg >= 3:
-            command = 'l'
+            send_command.set_rc_channel_pwm(4, 1700)
         elif diff_deg < -3:
-            command = 'r'
-        command_send(command)
+            send_command.set_rc_channel_pwm(4, 1300)
     time.sleep(1)
         
         
