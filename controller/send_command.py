@@ -5,10 +5,11 @@ Created on Fri Nov  8 17:50:48 2019
 @author: FujiiChang
 """
 # Import mavutil
+import time
 from pymavlink import mavutil
 
 # Create the connection
-master = mavutil.mavlink_connection('udpin:0.0.0.0:14550')
+master = mavutil.mavlink_connection('udpin:0.0.0.0:14551')
 # Wait a heartbeat before sending commands
 master.wait_heartbeat()
 
@@ -34,3 +35,11 @@ def set_rc_channel_pwm(id, pwm=1500):
             master.target_system,                # target_system
             master.target_component,             # target_component
             *rc_channel_values)                  # RC channel list, in microseconds.
+
+if __name__ == "__main__":
+    set_rc_channel_pwm(4, 1300)
+    time.sleep(5)
+    set_rc_channel_pwm(5, 1700)
+    time.sleep(5)
+    set_rc_channel_pwm(4, 1200)
+    time.sleep(5)
