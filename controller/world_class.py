@@ -29,6 +29,11 @@ class World:
         ax.set_xlabel("X", fontsize=10)
         ax.set_ylabel("Y", fontsize=10)
         
-        for obj in self.objects: obj.draw(ax)
+        for obj in self.objects:
+            obj.draw(ax)
+            self.plot_target_point(self.points)
         
         plt.show()
+    
+    def plot_target_point(point):
+        plt.plot(point)
