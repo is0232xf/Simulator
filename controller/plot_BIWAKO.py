@@ -12,7 +12,7 @@ import numpy as np
 
 world = world_class.World()
 
-data = np.genfromtxt('test_4.csv', delimiter=',',
+data = np.genfromtxt('test.csv', delimiter=',',
                   names=True, dtype=None, encoding='utf-8')
 
 initial_pose = np.array([data[0][3], data[0][2], math.radians(data[0][4])]).T
