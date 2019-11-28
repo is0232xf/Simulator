@@ -31,17 +31,11 @@ csvWriter = csv.writer(file)
 # set up vehicle
 print("waiting connection")
 
-way_point = np.array([[34.982187, 135.963695], [34.982192, 135.963596], [34.982118, 135.963598],
-                      [34.982118, 135.963698]])
-"""
-way_point = np.array([[34.980779, 135.963660], [34.981122, 135.963526], [34.981425, 135.963706], [34.981598, 135.963561],
-                      [34.981598, 135.963561], [34.981095, 135.963695],[34.980350, 135.963502]])
-"""
-print(len(way_point))
+way_point = np.genfromtxt('./way_point/square.csv', delimiter=',', dtype='float', encoding='utf-8')
+
 way_point_num = 0
 target_point = way_point[way_point_num]
-
-my_position = np.array([34.982118, 135.963698, math.radians(90)])
+my_position = np.array([way_point[0][0], way_point[0][1], math.radians(90)])
 try:
     while True:
         current_point = np.array([my_position[0], my_position[1]])
