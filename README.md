@@ -14,4 +14,5 @@ Square waypoint
 ![square](https://user-images.githubusercontent.com/17609665/69784257-b7b6e600-11f8-11ea-9299-f10697b01114.png)
 
 Star waypoint
+
 ![star](https://user-images.githubusercontent.com/17609665/69784283-c69d9880-11f8-11ea-8cec-ea84df23ae49.png)
