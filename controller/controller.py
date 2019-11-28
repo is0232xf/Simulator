@@ -44,7 +44,8 @@ try:
         diff_distance = geodesic(current_point, target_point).m
         
         # check distance between current and target
-        if abs(diff_distance) < 1:
+        if abs(diff_distance) < 0.5:
+            print(diff_distance)
             print("complete mission ", way_point_num)
             time.sleep(2)
             way_point_num = way_point_num + 1
@@ -57,29 +58,30 @@ try:
         else:
             target_direction = math.degrees(calculate_angle.limit_angle(
                     math.radians(cal_deg.calculate_bearing(current_point, target_point))))
-            print("target deg: ", target_direction)
+            #print("target deg: ", target_direction)
             current_yaw = math.degrees(current_yaw)
             diff_deg =  math.degrees(calculate_angle.limit_angle(math.radians(target_direction - current_yaw)))
-            print("diff deg: ", diff_deg)
+            #print("diff deg: ", diff_deg)
             # when the device aims to the target point
             if abs(diff_deg) < 2:
-                my_position[0] = my_position[0] + 2*ey*math.cos(my_position[2])
-                my_position[1] = my_position[1] + 2*ex*math.sin(my_position[2])
-                print("!!!")
+                print(diff_distance)
+                my_position[0] = my_position[0] + 1*ey*math.cos(my_position[2])
+                my_position[1] = my_position[1] + 1*ex*math.sin(my_position[2])
+                #print("!!!")
     
             elif diff_deg >= 2:
                 if abs(diff_deg) > 180:                  
                     my_position[2] = my_position[2] - math.radians(2)
                 else:
                     my_position[2] = my_position[2] + math.radians(2)
-                print("my deg: ", math.degrees(my_position[2]))
+                #print("my deg: ", math.degrees(my_position[2]))
                 
             elif diff_deg < -2:
                 if abs(diff_deg) > 180:                  
                     my_position[2] = my_position[2] + math.radians(2)
                 else:
                     my_position[2] = my_position[2] - math.radians(2)
-                print("my deg: ", math.degrees(my_position[2]))
+                #print("my deg: ", math.degrees(my_position[2]))
             csvWriter.writerow([target_point[0], target_point[1], 
                                 current_point[0], current_point[1], 
                                 current_yaw])
