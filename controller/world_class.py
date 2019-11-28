@@ -21,8 +21,9 @@ class World:
     def append(self, obj):
         self.objects.append(obj)
     
-    def draw(self):
-        fig = plt.figure(figsize=(4 ,8))
+    def draw(self, date, name):
+        fig = plt.figure(figsize=(8 ,6))
+        plt.grid(True)
         ax = fig.add_subplot(1, 1, 1)
         ax.set_aspect("equal")        
         ax.set_xlim(min(self.points[:,1])-0.6*self.ex, max(self.points[:,1])+0.6*self.ex)
@@ -34,7 +35,9 @@ class World:
         for obj in self.objects:
             obj.draw(ax)
         
+        plt.savefig("../../plot_data/" + str(date) + "/" + str(name) + ".png")
         plt.show()
+        plt.clf()
     
     def plot_target_point(self, points, ax):
         for point in points:
