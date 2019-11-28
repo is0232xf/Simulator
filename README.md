@@ -10,7 +10,7 @@
 	- input: simulated data(.csv), output: perfomace data(.png)
 
 _Future work_
-- Enable to input data from the teminal.
+#####Enable to input data from the teminal.
 
 *Operation*
 1. Search set of longitudes and latitudes of waypoints on Google map. 
