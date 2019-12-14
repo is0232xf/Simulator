@@ -42,7 +42,7 @@ try:
         # current_yaw = BIWAKO.vehicle.heading
         current_yaw = my_position[2]
         diff_distance = geodesic(current_point, target_point).m
-        
+
         # check distance between current and target
         if abs(diff_distance) < 0.5:
             print(diff_distance)
@@ -65,25 +65,25 @@ try:
             # when the device aims to the target point
             if abs(diff_deg) < 2:
                 print(diff_distance)
-                my_position[0] = my_position[0] + 1*ey*math.cos(my_position[2])
-                my_position[1] = my_position[1] + 1*ex*math.sin(my_position[2])
+                my_position[0] = my_position[0] + 1*ey*math.cos(my_position[2]) # + disturbance + inertial force
+                my_position[1] = my_position[1] + 1*ex*math.sin(my_position[2]) # + disturbance + inertial force
                 #print("!!!")
-    
+
             elif diff_deg >= 2:
-                if abs(diff_deg) > 180:                  
-                    my_position[2] = my_position[2] - math.radians(2)
+                if abs(diff_deg) > 180:
+                    my_position[2] = my_position[2] - math.radians(2) # + inertial force
                 else:
-                    my_position[2] = my_position[2] + math.radians(2)
+                    my_position[2] = my_position[2] + math.radians(2) # + inertial force
                 #print("my deg: ", math.degrees(my_position[2]))
-                
+
             elif diff_deg < -2:
-                if abs(diff_deg) > 180:                  
-                    my_position[2] = my_position[2] + math.radians(2)
+                if abs(diff_deg) > 180:
+                    my_position[2] = my_position[2] + math.radians(2) # + inertial force
                 else:
-                    my_position[2] = my_position[2] - math.radians(2)
+                    my_position[2] = my_position[2] - math.radians(2) # + inertial force
                 #print("my deg: ", math.degrees(my_position[2]))
-            csvWriter.writerow([target_point[0], target_point[1], 
-                                current_point[0], current_point[1], 
+            csvWriter.writerow([target_point[0], target_point[1],
+                                current_point[0], current_point[1],
                                 current_yaw])
             time.sleep(0.2)
     print("Mission complete")
