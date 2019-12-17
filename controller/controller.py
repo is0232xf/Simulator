@@ -10,12 +10,10 @@ import datetime
 import time
 import math
 import calculate_angle
-#import send_command
 import numpy as np
 import calculate_degree as cal_deg
-from ArduPilotDriver import ArduPilotDriver
 from geopy.distance import geodesic
-
+import disturbance_class as disturbance
 
 theta = 34.9820933 # latitude
 earth_R = 6378137 # Earth radius WGS84
@@ -37,6 +35,7 @@ way_point_num = 0
 target_point = way_point[way_point_num]
 my_position = np.array([way_point[0][0], way_point[0][1], math.radians(90)])
 try:
+    disturbance = disturbance.disturbance()
     while True:
         current_point = np.array([my_position[0], my_position[1]])
         # current_yaw = BIWAKO.vehicle.heading
@@ -65,8 +64,8 @@ try:
             # when the device aims to the target point
             if abs(diff_deg) < 2:
                 print(diff_distance)
-                my_position[0] = my_position[0] + 1*ey*math.cos(my_position[2]) # + disturbance + inertial force
-                my_position[1] = my_position[1] + 1*ex*math.sin(my_position[2]) # + disturbance + inertial force
+                my_position[0] = my_position[0] + 1*ey*math.cos(my_position[2]) + ey*disturbance.force_y # + inertial force
+                my_position[1] = my_position[1] + 1*ex*math.sin(my_position[2]) + ex*disturbance.force_x # + inertial force
                 #print("!!!")
 
             elif diff_deg >= 2:
@@ -82,6 +81,9 @@ try:
                 else:
                     my_position[2] = my_position[2] - math.radians(2) # + inertial force
                 #print("my deg: ", math.degrees(my_position[2]))
+            disturbance.shift_wave_term()
+            disturbance.shift_window_term()
+            disturbance.change_disturbance_force()
             csvWriter.writerow([target_point[0], target_point[1],
                                 current_point[0], current_point[1],
                                 current_yaw])
