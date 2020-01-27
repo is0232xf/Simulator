@@ -19,12 +19,12 @@ class disturbance:
        self.force_y = 0.0
 
     def shift_wave_term(self):
-        wave_force = 1 * np.random.normal()
+        wave_force = 0.5 * np.random.normal()
         wave_direction = calculate_angle.limit_angle(2 * math.pi * np.random.normal())
         self.wave = np.array([wave_force, wave_direction])
 
     def shift_window_term(self):
-        window_force = 1 * np.random.normal()
+        window_force = 0.5 * np.random.normal()
         window_direction = calculate_angle.limit_angle(2 * math.pi * np.random.normal())
         self.window = np.array([window_force, window_direction])
 
