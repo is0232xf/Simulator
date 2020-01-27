@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+0.# -*- coding: utf-8 -*-
 """
 Created on Thu Nov  7 16:54:01 2019
 
@@ -15,12 +15,14 @@ import calculate_degree as cal_deg
 from geopy.distance import geodesic
 import disturbance_class as disturbance
 
+################################# set up ##################################################
+# define variables
 theta = 34.9820933 # latitude
 earth_R = 6378137 # Earth radius WGS84
 ey = 360/(2*math.pi*earth_R) # latitude: 1deg -> 1m
 ex = 360/(2*math.pi*earth_R*math.cos(theta*math.pi/180)) # longitude: 1deg -> 1m
 
-# get date time object
+# obtaine date time object for file name definition
 detail = datetime.datetime.now()
 date = detail.strftime("%Y_%m_%d_%H_%M_%S")
 # open csv file
@@ -29,11 +31,15 @@ csvWriter = csv.writer(file)
 # set up vehicle
 print("waiting connection")
 
+# read waypoint file (csv)
 way_point = np.genfromtxt('./way_point/square.csv', delimiter=',', dtype='float', encoding='utf-8')
 
 way_point_num = 0
-target_point = way_point[way_point_num]
-my_position = np.array([way_point[0][0], way_point[0][1], math.radians(90)])
+target_point = way_point[way_point_num] # the next target point
+my_position = np.array([way_point[0][0], way_point[0][1], math.radians(90)]) # initialize the robot position
+###########################################################################################
+
+
 try:
     disturbance = disturbance.disturbance()
     while True:
