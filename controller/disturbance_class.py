@@ -6,20 +6,28 @@ Created on Fri Dec 13 21:26:11 2019
 """
 
 import math
+import calculate_angle
 import numpy as np
 
-class disturbnce:
+class disturbance:
 
     def __init__(self):
-       self.wave = 0.0
-       self.window = 0.0
-       self.wave_direction = 0.0
-       self.window_direction = 0.0
+        # [force, direction]
+       self.wave = np.array([0.0, 0.0])
+       self.window = np.array([0.0, 0.0])
+       self.force_x = 0.0
+       self.force_y = 0.0
 
     def shift_wave_term(self):
-        self.wave = 3 * np.random.normal()
-        self.wave_direction = 2 * math.pi() * np.random.normal()
+        wave_force = 0.5 * np.random.normal()
+        wave_direction = calculate_angle.limit_angle(2 * math.pi * np.random.normal())
+        self.wave = np.array([wave_force, wave_direction])
 
     def shift_window_term(self):
-        self.window = 1 * np.random.normal()
-        self.window_direction = 2 * math.pi() * np.random.normal()
+        window_force = 0.5 * np.random.normal()
+        window_direction = calculate_angle.limit_angle(2 * math.pi * np.random.normal())
+        self.window = np.array([window_force, window_direction])
+
+    def change_disturbance_force(self):
+       self.force_x = self.wave[0]*math.cos(self.wave[1]) + self.window[0]*math.cos(self.window[1])
+       self.force_y = self.wave[0]*math.sin(self.wave[1]) + self.window[0]*math.sin(self.window[1])
