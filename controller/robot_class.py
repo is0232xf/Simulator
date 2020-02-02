@@ -35,12 +35,74 @@ class Robot:
         self.pose[1] = self.pose[1] + t_y
         self.pose[2] = self.pose[2] + theta
         print("move to: ", self.pose)
+ 
+    def therust(case, direction):
+        # 入力をx方向への直進，y方向への直進，回転にする (str型)
+        # 出力はスラスト力をndarray型にする
         
-    def draw(self, ax):
-        x, y, theta = self.pose
-        xn = x + self.r * math.sin(theta)
-        yn = y + self.r * math.cos(theta)
-        ax.plot([x, xn], [y, yn], color=self.color)
-        c = patches.Circle(xy=(x,y), radius=self.r, fill=False, color=self.color)
-        ax.add_patch(c)
+        # T is a list that has each motor 
+        T = np.array([[0],
+                      [0],
+                      [0],
+                      [0]])
+        if case == "x":
+            if direction == 0:
+                T1.set_pwm_input(1600)
+                T2.set_pwm_input(1600)
+                T3.set_pwm_input(1400)
+                T4.set_pwm_input(1400)
+                
+            elif direction == 1:
+                T1.set_pwm_input(1400)
+                T2.set_pwm_input(1400)
+                T3.set_pwm_input(1600)
+                T4.set_pwm_input(1600) 
+            
+            
+        elif case == "y":
+            if direction == 0:
+                T1.set_pwm_input(1600)
+                T2.set_pwm_input(1400)
+                T3.set_pwm_input(1600)
+                T4.set_pwm_input(1400)
+                
+                
+            elif direction == 1:
+                T1.set_pwm_input(1400)
+                T2.set_pwm_input(1600)
+                T3.set_pwm_input(1400)
+                T4.set_pwm_input(1600) 
+            
+        elif case == "r":
+            if direction == 0:
+                T1.set_pwm_input(1600)
+                T2.set_pwm_input(1400)
+                T3.set_pwm_input(1400)
+                T4.set_pwm_input(1600)
+                
+                
+            elif direction == 1:
+                T1.set_pwm_input(1400)
+                T2.set_pwm_input(1600)
+                T3.set_pwm_input(1600)
+                T4.set_pwm_input(1400)
     
+        thrust_1 = T1.determine_thrust()
+        thrust_2 = T2.determine_thrust()
+        thrust_3 = T3.determine_thrust()
+        thrust_4 = T4.determine_thrust()
+        
+        T = np.array([[thrust_1],
+                      [thrust_2],
+                      [thrust_3],
+                      [thrust_4]])
+    
+        a = math.cos(math.radians(45))
+        b = math.sin(math.radians(45))
+        D = 0.25 # unit[m]
+        phi = np.array([[a, a, -a, -a],
+                        [b, -b, b, -b],
+                        [D, -D, -D, D]])
+        t = np.dot(phi, T)
+        print(t)
+        return t
