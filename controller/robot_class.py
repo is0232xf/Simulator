@@ -13,6 +13,9 @@ R = 6378137 # Earth radius WGS84
 class Robot:
     def __init__(self, pose, color="black"):
         self.pose = pose
+        self.x = self.pose[0]
+        self.y = self.pose[1]
+        self.yaw = self.pose[2]
         self.r = 0.000005
         self.color = color
         
