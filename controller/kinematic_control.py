@@ -29,6 +29,9 @@ class Motor(object):
         self.pwm_imput = pwm_imput
         self.voltage = voltage
 
+    def set_pwm_input(self, pwm):
+        self.pwm_imput = pwm
+        
     # detrmine rotation directioin from the pwm_imput
     def determine_rotation_direction(self):
         if self.pwm_imput > 1525 and self.pwm_imput < 1900:
