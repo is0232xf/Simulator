@@ -1,29 +1,23 @@
-0.# -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 """
-Created on Thu Nov  7 16:54:01 2019
+Created on Sun Feb  2 18:56:24 2020
 
 @author: FujiiChang
 """
 
+# mainを壊すのが怖いためクローンを改造していく
+
 import csv
+import math
 import datetime
 import time
-import math
-import calculate_angle
 import numpy as np
-import calculate_degree as cal_deg
 import disturbance_class as disturbance
+from earth_class import Earth
 from robot_class import Robot
-from geopy.distance import geodesic
-from kinematic_control import Motor
+from controller_class import Controller
 
 #################################### set up ###############################################
-# define variables
-theta = 34.9820933 # latitude
-earth_R = 6378137 # Earth radius WGS84
-ey = 360/(2*math.pi*earth_R) # latitude: 1deg -> 1m
-ex = 360/(2*math.pi*earth_R*math.cos(theta*math.pi/180)) # longitude: 1deg -> 1m
-
 # obtaine date time object for file name definition
 detail = datetime.datetime.now()
 date = detail.strftime("%Y_%m_%d_%H_%M_%S")
@@ -34,20 +28,18 @@ csvWriter = csv.writer(file)
 print("waiting connection")
 
 # read waypoint file (csv)
-way_point = np.genfromtxt('./way_point/square.csv', delimiter=',', dtype='float', encoding='utf-8')
-
-way_point_num = 0
-target_point = way_point[way_point_num] # the next target point
-
-pose = np.array([way_point[0][0], way_point[0][1], math.radians(90)]) # initialize the robot position
+way_point = np.genfromtxt('./way_point/square.csv',
+                          delimiter=',',
+                          dtype='float',
+                          encoding='utf-8')
+Controller = Controller(way_point)
+pose = np.array([Controller.way_point[0][0], Controller.way_point[0][1], math.radians(90)]) # initialize the robot position
+print("pose: ", pose)
 Okebot = Robot(pose)
+# define variables
 
-pwm_initial = 1500
-voltage = 11.1
-T1 = Motor(pwm_initial, voltage)
-T2 = Motor(pwm_initial, voltage)
-T3 = Motor(pwm_initial, voltage)
-T4 = Motor(pwm_initial, voltage)
+Earth =  Earth(Okebot.y)
+
 ###########################################################################################
 
 # input: driving force of the robot
@@ -55,69 +47,31 @@ T4 = Motor(pwm_initial, voltage)
 def calc_drag(F):
     D_f = 0 # Drag effected by flow
     D_w = 0 # Drag effected by waves
-   
+
     D = np.array([D_x],  # Drag forces which subjects to the robot
                  [D_y],
                  [D_r])
     return D
 
 try:
-    disturbance = disturbance.disturbance()
-    
+   #  disturbance = disturbance.disturbance()
+    disturbance = np.array([[0],
+                            [0],
+                            [0]])
     while True:
-        current_point = np.array([Okebot.x, Okebot.y])
-        current_yaw = Okebot.yaw
-        diff_distance = geodesic(current_point, target_point).m
-        # check distance between current and target
-        if abs(diff_distance) < 0.5:
-            print(diff_distance)
-            print("complete mission ", way_point_num)
-            way_point_num = way_point_num + 1
-            if way_point_num >= len(way_point):
-                break
-            target_point = way_point[way_point_num]
-            print("change waypoint")
-            print("next way point: ", target_point)
-        # when the device has not received
+        if Controller.check_way_point():
+            break
         else:
-            target_direction = math.degrees(calculate_angle.limit_angle(
-                    math.radians(cal_deg.calculate_bearing(current_point, target_point))))
-            current_yaw = math.degrees(current_yaw)
-            diff_deg =  math.degrees(calculate_angle.limit_angle(math.radians(target_direction - current_yaw)))
-            if abs(diff_deg) < 2:
-                print(diff_distance)
-                Okebot.x = Okebot.x + 1*ey*math.cos(Okebot.yaw) + ey*disturbance.force_y # + inertial force
-                Okebot.y = Okebot.y + 1*ex*math.sin(Okebot.yaw) + ex*disturbance.force_x # + inertial force
-                case = "x"
-                direction = 0
-
-            elif diff_deg >= 2:
-                if abs(diff_deg) > 180:
-                    Okebot.yaw = Okebot.yaw - math.radians(2) # + inertial force
-                    case = "r"
-                    direction = 1
-                else:
-                    Okebot.yaw = Okebot.yaw + math.radians(2) # + inertial force
-                    case = "r"
-                    direction = 0
-            elif diff_deg < -2:
-                if abs(diff_deg) > 180:
-                    Okebot.yaw = Okebot.yaw + math.radians(2) # + inertial force
-                    case = "r"
-                    direction = 0
-                else:
-                    Okebot.yaw = Okebot.yaw - math.radians(2) # + inertial force
-                    case = "r"
-                    direction = 0
-                #print("my deg: ", math.degrees(Okebot.yaw))
-            disturbance.shift_wave_term()
-            disturbance.shift_window_term()
-            disturbance.change_disturbance_force()
+            action = Controller.decide_next_action(Okebot)
+            pwm = Controller.update_pwm_pulse(action)
+            Okebot.update_pwm_pulse(pwm)
+            Okebot.update_state(disturbance)
+            target_point = Controller.next_goal
+            current_point = [Okebot.x, Okebot.y]
             csvWriter.writerow([target_point[0], target_point[1],
                                 current_point[0], current_point[1],
-                                current_yaw])
-            time.sleep(0.05)
-            T = therust(case, direction)
+                                math.degrees(Okebot.yaw)])
+        time.sleep(0.05)
             #print(T)
     print("Mission complete")
     file.close()
