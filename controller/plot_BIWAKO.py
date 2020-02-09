@@ -19,11 +19,10 @@ os.mkdir("../../plot_data/" + date)
 
 # import way_point data
 way_point = np.genfromtxt('./way_point/square.csv', delimiter=',', dtype='float', encoding='utf-8')
-print(way_point)
 world = world_class.World(way_point)
 
 # input tracking data
-data = np.genfromtxt('./csv/square_disturbance.csv', delimiter=',',
+data = np.genfromtxt('./csv/square_new.csv', delimiter=',',
                   names=True, dtype=None, encoding='utf-8')
 
 initial_pose = np.array([data[0][3], data[0][2], math.radians(data[0][4])]).T
