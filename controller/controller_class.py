@@ -17,12 +17,6 @@ class Controller:
         self.way_point_num = 0
         self.next_goal = self.way_point[self.way_point_num]
 
-    def check_way_point(self):
-        if self.way_point_num > len(self.way_point)-2:
-            return True
-        else:
-            return False
-
     def update_way_point(self):
         self.way_point_num = self.way_point_num + 1
         self.next_goal = self.way_point[self.way_point_num]
@@ -37,7 +31,11 @@ class Controller:
         if abs(diff_distance) < 0.5:
             print("complete mission ", self.way_point_num)
             action = ["s", 0]
-            self.update_way_point()
+            if self.way_point_num < len(self.way_point)-1:
+                self.update_way_point()
+            else:
+                action = ["f", 0]
+                return action
             print("change waypoint")
             print("next way point: ", self.next_goal)
             time.sleep(1)
