@@ -28,7 +28,7 @@ csvWriter = csv.writer(file)
 print("waiting connection")
 
 # read waypoint file (csv)
-way_point = np.genfromtxt('./way_point/square.csv',
+way_point = np.genfromtxt('./way_point/star.csv',
                           delimiter=',',
                           dtype='float',
                           encoding='utf-8')
@@ -59,18 +59,17 @@ try:
                             [0],
                             [0]])
     while True:
-        if Controller.check_way_point():
+        action = Controller.decide_next_action(Okebot)
+        if action[0] == "f":
             break
-        else:
-            action = Controller.decide_next_action(Okebot)
-            pwm = Controller.update_pwm_pulse(action)
-            Okebot.update_pwm_pulse(pwm)
-            Okebot.update_state(disturbance)
-            target_point = Controller.next_goal
-            current_point = [Okebot.x, Okebot.y]
-            csvWriter.writerow([target_point[0], target_point[1],
-                                current_point[0], current_point[1],
-                                math.degrees(Okebot.yaw)])
+        pwm = Controller.update_pwm_pulse(action)
+        Okebot.update_pwm_pulse(pwm)
+        Okebot.update_state(disturbance)
+        target_point = Controller.next_goal
+        current_point = [Okebot.x, Okebot.y]
+        csvWriter.writerow([target_point[0], target_point[1],
+                            current_point[0], current_point[1],
+                            math.degrees(Okebot.yaw)])
         time.sleep(0.05)
             #print(T)
     print("Mission complete")
