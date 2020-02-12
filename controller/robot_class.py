@@ -20,6 +20,7 @@ class Robot:
         self.y = self.pose[1]
         self.yaw = self.pose[2]
         self.voltage = 11.1
+        self.D = 0.10
         self.pwm_1 = 1500
         self.pwm_2 = 1500
         self.pwm_3 = 1500
@@ -48,7 +49,7 @@ class Robot:
         F_v = np.dot(R, F_t)
         F_x = self.earth.ex * F_v[0][0] * 0.15
         F_y = self.earth.ey * F_v[1][0] * 0.15
-        F_r = math.radians(2) * F[2][0] * 0.3
+        F_r = math.radians(2) * F[2][0] * 0.5
         self.x = self.x + F_x
         self.y = self.y + F_y
         self.yaw = self.yaw + F_r
@@ -81,7 +82,7 @@ class Robot:
         # T is a list that has each motor
         a = math.cos(math.radians(45))
         b = math.sin(math.radians(45))
-        D = 0.25 # unit[m]
+        D = self.D
         phi = np.array([[a, a, -a, -a],
                         [b, -b, b, -b],
                         [D, -D, -D, D]])
