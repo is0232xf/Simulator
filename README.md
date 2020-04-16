@@ -13,7 +13,7 @@
 	1. `python create_waypoint_data.py`
 1. Simulate the device behavior and create the tracking data(.csv).
 	1. `python controller/main.py`
-1. If file log mode is on(able to configure in main.py), aave the device behavior as a csv data & sequential figure(.png) automatically.
+1. If file log mode is on(able to configure in main.py), save the device behavior as a csv data & sequential figure(.png) automatically.
 
 *Example*
 
