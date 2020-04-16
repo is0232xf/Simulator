@@ -31,3 +31,4 @@ class disturbance:
     def change_disturbance_force(self):
        self.force_x = self.wave[0]*math.cos(self.wave[1]) + self.window[0]*math.cos(self.window[1])
        self.force_y = self.wave[0]*math.sin(self.wave[1]) + self.window[0]*math.sin(self.window[1])
+       

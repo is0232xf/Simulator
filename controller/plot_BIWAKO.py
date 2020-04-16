@@ -12,26 +12,27 @@ import datetime
 import os
 import numpy as np
 
-now = datetime.datetime.now()
-date = now.strftime("%Y_%m_%d_%H_%M_%S")
+def make_figure(way_point, file):
+	now = datetime.datetime.now()
+	date = now.strftime("%Y_%m_%d_%H_%M_%S")
 
-os.mkdir("../../plot_data/" + date)
+	os.mkdir("../../plot_data/" + date)
 
-# import way_point data
-way_point = np.genfromtxt('./way_point/star.csv', delimiter=',', dtype='float', encoding='utf-8')
-world = world_class.World(way_point)
+	# import way_point data
+	way_point = np.genfromtxt(way_point, delimiter=',', dtype='float', encoding='utf-8')
+	world = world_class.World(way_point)
 
-# input tracking data
-data = np.genfromtxt('./csv/test9.csv', delimiter=',',
-                  names=True, dtype=None, encoding='utf-8')
+	# input tracking data
+	data = np.genfromtxt(file, delimiter=',',
+	                  names=True, dtype=None, encoding='utf-8')
 
-initial_pose = np.array([data[0][3], data[0][2], math.radians(data[0][4])]).T
-robot = robot_class.Robot(np.array(initial_pose))
+	initial_pose = np.array([data[0][3], data[0][2], math.radians(data[0][4])]).T
+	robot = robot_class.Robot(np.array(initial_pose))
 
-world.append(robot)
-world.draw(date, 0)
+	world.append(robot)
+	world.draw(date, 0)
 
-for i in range(1, len(data)):
-    robot = robot_class.Robot(np.array([data[i][3], data[i][2], math.radians(data[i][4])]).T)
-    world.append(robot)
-    world.draw(date, str(i))
+	for i in range(1, len(data)):
+	    robot = robot_class.Robot(np.array([data[i][3], data[i][2], math.radians(data[i][4])]).T)
+	    world.append(robot)
+	    world.draw(date, str(i))

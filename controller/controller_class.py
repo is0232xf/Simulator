@@ -6,10 +6,13 @@ Created on Sun Feb  2 14:53:49 2020
 """
 import math
 import time
+
 import numpy as np
+from geopy.distance import geodesic
+
 import calculate_angle
 import calculate_degree as cal_deg
-from geopy.distance import geodesic
+
 
 class Controller:
     def __init__(self, way_point):
@@ -22,13 +25,14 @@ class Controller:
         self.next_goal = self.way_point[self.way_point_num]
 
     def decide_next_action(self, Okebot):
+        action_log = False
+        print_target = False
         # decide the next action from current robot status and the next waypoint
         current_point = np.array([Okebot.x, Okebot.y])
         current_yaw = Okebot.yaw
         diff_distance = geodesic(current_point, self.next_goal).m
-        print(diff_distance)
         # check distance between current and target
-        if abs(diff_distance) < 0.5:
+        if abs(diff_distance) < 1.0:
             print("complete mission ", self.way_point_num)
             action = ["s", 0]
             if self.way_point_num < len(self.way_point)-1:
@@ -52,18 +56,14 @@ class Controller:
                 action = ["r", 0]
             elif diff_deg < -2:
                 action = ["r", 1]
-            print("next way point: ", self.next_goal)
-        print("action: ", action)
+            if print_target:
+                print("next way point: ", self.next_goal)
+        if action_log:
+            print("action: ", action)
         return action
 
     def update_pwm_pulse(self, action):
         # update pwm pulse width for each thruster from the next action
-        T1 = 1500
-        T2 = 1500
-        T3 = 1500
-        T4 = 1500
-
-
         if action[0] == "s" and action[1] == 0:
             T1 = 1500
             T2 = 1500

@@ -26,17 +26,22 @@ class Thruster(object):
             return 0
     # determine motor powew 1lbf = 4.45N
     def calc_thrust(self, pwm_pulse):
-        a = 2.34375e-8
-        b = -1.0078125e-4
-        c = 0.152265625
-        d = -80.7421875
-        x = pwm_pulse
-
-        lbf_thrust = a*x**3 + b*x**2 + c*x + d
         if 1475 <= pwm_pulse <= 1525:
             lbf_thrust = 0
         elif pwm_pulse < 1100 and 1900 < pwm_pulse:
             lbf_thrust = 0
+        elif pwm_pulse > 1525:
+            a = 1.32952380952e-5
+            b = -0.0307628571427
+            c = 15.993619047468002
+            x = pwm_pulse
+            lbf_thrust = a*x**2 + b*x + c
+        elif pwm_pulse < 1475:
+            a = -1.5295238095238094e-05
+            b = 0.04977178571428571
+            c = -40.13668154761904
+            x = pwm_pulse
+            lbf_thrust = a*x**2 + b*x + c
 
         N_thrust = translate_lbf_to_N(lbf_thrust)
         return N_thrust
@@ -74,19 +79,19 @@ if __name__ == "__main__":
     T3 = Thruster(pwm_3, voltage)
     T4 = Thruster(pwm_4, voltage)
     A_1 = T1.determine_ampere(pwm_1)
-    thrust_1 = T1.calc_thrust()
+    thrust_1 = T1.calc_thrust(pwm_1)
     direction_1 = T1.determine_rotation_direction()
     power_1 = T1.calculate_power_consumption()
     A_2 = T2.determine_ampere(pwm_2)
-    thrust_2 = T2.calc_thrust()
+    thrust_2 = T2.calc_thrust(pwm_2)
     direction_2 = T2.determine_rotation_direction()
     power_2 = T2.calculate_power_consumption()
     A_3 = T3.determine_ampere(pwm_3)
-    thrust_3 = T3.calc_thrust()
+    thrust_3 = T3.calc_thrust(pwm_3)
     direction_3 = T3.determine_rotation_direction()
     power_3 = T3.calculate_power_consumption()
     A_4 = T4.determine_ampere(pwm_4)
-    thrust_4 = T4.calc_thrust()
+    thrust_4 = T4.calc_thrust(pwm_4)
     direction_4 = T4.determine_rotation_direction()
     power_4 = T4.calculate_power_consumption()
 
