@@ -27,4 +27,6 @@ Star waypoint
 
 _Future work_
 
-##### * Enable to input data from the teminal.
+##### * Enable to input data from the terminal.
+##### * Add disturbance model
+##### * Add GPS noise
