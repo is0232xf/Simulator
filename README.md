@@ -25,7 +25,7 @@ Star waypoint
 
 ![star](https://user-images.githubusercontent.com/17609665/69784283-c69d9880-11f8-11ea-8cec-ea84df23ae49.png)
 
-_Future work_
+_TODO list_
 
 ##### * Enable to input data from the terminal.
 ##### * Add disturbance model
