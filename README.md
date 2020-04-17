@@ -27,6 +27,6 @@ Star waypoint
 
 _TODO list_
 
-##### * Enable to input data from the terminal.
+##### * Enable to input data from a terminal
 ##### * Add disturbance model
 ##### * Add GPS noise
