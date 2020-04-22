@@ -8,16 +8,15 @@ Created on Thu Nov 28 12:58:03 2019
 import csv
 import numpy as np
 
-filename = "star.csv"
+filename = "biwako.csv"
 file = open(filename, 'a', newline='')
 csvWriter = csv.writer(file)
 
-way_point = np.array([[34.982202, 135.963644],
-                      [34.982111, 135.963602],
-                      [34.982166, 135.963707],
-                      [34.982170, 135.963586],
-                      [34.982109, 135.963690],
-                      [34.982202, 135.963644]])
+way_point = np.array([[35.142080, 135.980897],
+                      [35.140815, 135.979339],
+                      [35.142043, 135.977730],
+                      [35.143359, 135.979243],
+                      [35.142080, 135.980897]])
 
 for data in way_point:
     csvWriter.writerow(data)
