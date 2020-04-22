@@ -28,7 +28,7 @@ class Controller:
         action_log = False
         print_target = False
         # decide the next action from current robot status and the next waypoint
-        current_point = np.array([Okebot.x, Okebot.y])
+        current_point = np.array([Okebot.gps.longitude, Okebot.gps.latitude])
         current_yaw = Okebot.yaw
         diff_distance = geodesic(current_point, self.next_goal).m
         # check distance between current and target
@@ -42,7 +42,6 @@ class Controller:
                 return action
             print("change waypoint")
             print("next way point: ", self.next_goal)
-            time.sleep(1)
         # when the device has not received
         else:
             target_direction = math.degrees(calculate_angle.limit_angle(

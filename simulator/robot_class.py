@@ -10,30 +10,43 @@ import numpy as np
 from earth_class import Earth
 import matplotlib.patches as patches
 from thruster_class import Thruster
+from GPS_class import GPS
 
 class Robot:
     def __init__(self, pose, color="black"):
+        # Drawing params
         self.r = 0.000005
         self.color = color
+
+        # Robot pose params
         self.pose = pose
         self.x = self.pose[0]
         self.y = self.pose[1]
         self.yaw = self.pose[2]
         self.voltage = 11.1
+
+        # The distance from the center of robot to each thruster
         self.D = 0.10
+
+        # Each thruster PWM freqs
         self.pwm_1 = 1500
         self.pwm_2 = 1500
         self.pwm_3 = 1500
         self.pwm_4 = 1500
+
+        # Use four thrusters
         self.T1 = Thruster(self.pwm_1, self.voltage)
         self.T2 = Thruster(self.pwm_2, self.voltage)
         self.T3 = Thruster(self.pwm_3, self.voltage)
         self.T4 = Thruster(self.pwm_4, self.voltage)
+
+        # Thrust power
         self.t1  = self.T1.calc_thrust(self.pwm_1)
         self.t2  = self.T2.calc_thrust(self.pwm_2)
         self.t3  = self.T3.calc_thrust(self.pwm_3)
         self.t4  = self.T4.calc_thrust(self.pwm_4)
 
+        self.gps = GPS(self.x, self.y)
         self.earth = Earth(self.y)
 
     def update_state(self, disturbance):
