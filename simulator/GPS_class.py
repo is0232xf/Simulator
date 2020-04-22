@@ -9,8 +9,8 @@ class GPS:
         # Error model params
         self.longitude = longitude
         self.latitude = latitude
-        self.e_mean = 2.0
-        self.e_std_dev = 1.0
+        self.e_mean = 8.7
+        self.e_std_dev = 26.6
 
     def update_gps_value(self, longitude, latitude):
         earth = Earth(latitude)

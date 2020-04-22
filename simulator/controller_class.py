@@ -25,6 +25,7 @@ class Controller:
         self.next_goal = self.way_point[self.way_point_num]
 
     def decide_next_action(self, Okebot):
+        tolerance = 5.0
         action_log = False
         print_target = False
         # decide the next action from current robot status and the next waypoint
@@ -32,7 +33,7 @@ class Controller:
         current_yaw = Okebot.yaw
         diff_distance = geodesic(current_point, self.next_goal).m
         # check distance between current and target
-        if abs(diff_distance) < 1.0:
+        if abs(diff_distance) < tolerance:
             print("complete mission ", self.way_point_num)
             action = ["s", 0]
             if self.way_point_num < len(self.way_point)-1:
