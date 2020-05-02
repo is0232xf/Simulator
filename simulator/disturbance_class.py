@@ -9,14 +9,14 @@ import math
 import calculate_angle
 import numpy as np
 
-class disturbance:
+class Disturbance:
 
     def __init__(self):
         # [force, direction]
        self.wave = np.array([0.0, 0.0])
        self.window = np.array([0.0, 0.0])
-       self.force_x = 0.0
-       self.force_y = 0.0
+       self.force_x = 0.1
+       self.force_y = 0.1
 
     def shift_wave_term(self):
         wave_force = 0.5 * np.random.normal()

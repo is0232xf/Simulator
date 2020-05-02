@@ -50,19 +50,20 @@ class Robot:
         self.earth = Earth(self.y)
 
     def update_state(self, disturbance):
-        trque = self.thrust()
+        force = self.thrust()
         yaw = self.yaw
         self.earth.calc_ex(self.earth.ey)
         R = np.array([[math.cos(yaw), -math.sin(yaw)],
                       [math.sin(yaw), math.cos(yaw)]])
         
-        F = trque - disturbance
+        F = force - disturbance
         F_t = np.array([[F[0][0]],
                         [F[1][0]]])
         F_v = np.dot(R, F_t)
         # 以下の3式の最終項の係数は現在てきとうに設定している
         F_x = self.earth.ex * F_v[0][0] * 0.15
         F_y = self.earth.ey * F_v[1][0] * 0.15
+
         F_r = math.radians(2) * F[2][0]
         self.x = self.x + F_x
         self.y = self.y + F_y
@@ -102,6 +103,18 @@ class Robot:
                         [D, -D, -D, D]])
         t = np.dot(phi, T)
         return t
+
+class DrawRobot:
+    def __init__(self, pose, color="black"):
+        # Drawing params
+        self.r = 0.000005
+        self.color = color
+
+        # Robot pose params
+        self.pose = pose
+        self.x = self.pose[0]
+        self.y = self.pose[1]
+        self.yaw = self.pose[2]
 
     def draw(self, ax):
         x, y, theta = self.pose

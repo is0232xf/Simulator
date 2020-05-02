@@ -8,18 +8,18 @@ Created on Fri Nov 15 12:03:14 2019
 import math
 import numpy as np
 import matplotlib.pyplot as plt
+import matplotlib.patches as patches
 
 class World:
     def __init__(self, points):
-        self.objects = []
+        self.objects = np.array([])
         self.points = points
         self.R = 6378137
         self.ey = 360/(2*math.pi*self.R)
         self.ex = 360/(2*math.pi*self.R*math.cos(np.mean(self.points[0,:])*math.pi/180))
-        print("mean latitude: ", np.mean(self.points[0,:]))
 
     def append(self, obj):
-        self.objects.append(obj)
+        self.objects = np.append(self.objects, obj)
 
     def draw(self, date, name):
         fig = plt.figure(figsize=(8 ,6))
@@ -35,10 +35,14 @@ class World:
         for obj in self.objects:
             obj.draw(ax)
 
-        plt.savefig("../../plot_data/" + str(date) + "/" + str(name) + ".png")
+        plt.savefig("../../plot_data/" + name)
         # plt.show()
         plt.clf()
 
     def plot_target_point(self, points, ax):
         for point in points:
-            ax.scatter(point[1], point[0])
+            x = point[1]
+            y = point[0]
+            ax.scatter(x, y)
+            c = patches.Circle(xy=(x,y), radius=self.ex/5.0, fill=False, color="black")
+            ax.add_patch(c)

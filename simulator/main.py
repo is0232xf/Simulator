@@ -11,7 +11,7 @@ import time
 
 import numpy as np
 
-import disturbance_class as disturbance
+from disturbance_class import Disturbance
 import plot_BIWAKO
 from controller_class import Controller
 from earth_class import Earth
@@ -60,19 +60,18 @@ def calc_drag(F):
     return D
 """
 try:
-    # disturbance = disturbance.disturbance()
-    disturbance = np.array([[0],
-                            [0],
-                            [0]])
+    Disturbance = Disturbance()
+    disturbance_force = np.array([[Disturbance.force_x],
+                                  [Disturbance.force_y],
+                                  [0.0]])
     while True:
         action = Controller.decide_next_action(Okebot)
         if action[0] == "f":
             break
         pwm = Controller.update_pwm_pulse(action)
         Okebot.update_pwm_pulse(pwm)
-        Okebot.update_state(disturbance)
+        Okebot.update_state(disturbance_force)
         target_point = Controller.next_goal
-        # current_point = [Okebot.x, Okebot.y]
         Okebot.gps.update_gps_value(Okebot.x, Okebot.y)
         if file_log:
             gt_log.append([target_point[0], target_point[1],
@@ -81,7 +80,6 @@ try:
             gps_log.append([target_point[0], target_point[1],
                             Okebot.gps.longitude, Okebot.gps.latitude,
                             math.degrees(Okebot.yaw)])
-        time.sleep(0.05)
     print("Mission complete")
     if file_log:
         for gt_log_data in gt_log:
@@ -91,8 +89,13 @@ try:
 
         ground_truth_data.close()
         gps_data.close()
-        plot_BIWAKO.make_figure(way_point_file, ground_truth_file)
-        plot_BIWAKO.make_figure(way_point_file, gps_file)
+
+        detail_data = [Controller.tolerance,Okebot.gps.e_mean,Okebot.gps.e_std_dev, Disturbance.force_y, Disturbance.force_x]
+
+        file_path_gt = date + "/groud_truth.png"
+        file_path_gps = date + "/gps.png"
+        plot_BIWAKO.make_figure(detail_data, way_point_file, ground_truth_file, file_path_gt)
+        plot_BIWAKO.make_figure(detail_data, way_point_file, gps_file, file_path_gps)
 except KeyboardInterrupt:
     if file_log:
         ground_truth_data.close()
