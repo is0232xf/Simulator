@@ -21,7 +21,7 @@ class World:
     def append(self, obj):
         self.objects = np.append(self.objects, obj)
 
-    def draw(self, date, name):
+    def draw(self, name):
         fig = plt.figure(figsize=(8 ,6))
         plt.grid(True)
         ax = fig.add_subplot(1, 1, 1)
@@ -35,7 +35,7 @@ class World:
         for obj in self.objects:
             obj.draw(ax)
 
-        plt.savefig("../../plot_data/" + name)
+        plt.savefig(name)
         # plt.show()
         plt.clf()
 

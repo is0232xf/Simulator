@@ -1,0 +1,15 @@
+{
+    "GPS":{
+        "e_mean": 8.6,
+        "e_std_dev": 26.7
+    },
+
+    "Controller":{
+        "torelance": 5.0
+    },
+
+    "Disturbance":{
+    	"force_x": 0.20,
+    	"force_y": 0.20
+    }
+}
