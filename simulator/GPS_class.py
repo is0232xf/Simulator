@@ -1,4 +1,5 @@
 import math
+import json
 import random
 
 import numpy as np
@@ -6,11 +7,13 @@ from earth_class import Earth
 
 class GPS:
     def __init__(self, longitude, latitude):
+        params_file = open("params.json", "r")
+        params = json.load(params_file) 
         # Error model params
         self.longitude = longitude
         self.latitude = latitude
-        self.e_mean = 8.7
-        self.e_std_dev = 26.6
+        self.e_mean = params["GPS"]["e_mean"]
+        self.e_std_dev = params["GPS"]["e_std_dev"]
 
     def update_gps_value(self, longitude, latitude):
         earth = Earth(latitude)

@@ -7,6 +7,7 @@ Created on Sun Feb  2 18:56:24 2020
 import csv
 import datetime
 import math
+import os
 import time
 
 import numpy as np
@@ -24,6 +25,8 @@ if file_log:
     # obtaine date time object for file name definition
     detail = datetime.datetime.now()
     date = detail.strftime("%Y_%m_%d_%H_%M_%S")
+    dir_name = "../../plot_data/" + date 
+    os.mkdir(dir_name)
     ground_truth_file = '../../csv_data/'+ date +'_gt.csv' # open csv file
     gps_file = '../../csv_data/'+ date +'_gps.csv' # open csv file
     ground_truth_data = open(ground_truth_file, 'a', newline='')
@@ -92,10 +95,10 @@ try:
 
         detail_data = [Controller.tolerance,Okebot.gps.e_mean,Okebot.gps.e_std_dev, Disturbance.force_y, Disturbance.force_x]
 
-        file_path_gt = date + "/groud_truth.png"
-        file_path_gps = date + "/gps.png"
-        plot_BIWAKO.make_figure(detail_data, way_point_file, ground_truth_file, file_path_gt)
-        plot_BIWAKO.make_figure(detail_data, way_point_file, gps_file, file_path_gps)
+        file_path_gt = dir_name + "/groud_truth.png"
+        file_path_gps = dir_name + "/gps.png"
+        plot_BIWAKO.make_figure(way_point_file, ground_truth_file, file_path_gt)
+        plot_BIWAKO.make_figure(way_point_file, gps_file, file_path_gps)
 except KeyboardInterrupt:
     if file_log:
         ground_truth_data.close()

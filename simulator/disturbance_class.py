@@ -6,17 +6,19 @@ Created on Fri Dec 13 21:26:11 2019
 """
 
 import math
+import json
 import calculate_angle
 import numpy as np
 
 class Disturbance:
 
     def __init__(self):
-        # [force, direction]
-       self.wave = np.array([0.0, 0.0])
-       self.window = np.array([0.0, 0.0])
-       self.force_x = 0.1
-       self.force_y = 0.1
+        params_file = open("params.json", "r")
+        params = json.load(params_file) 
+        self.wave = np.array([0.0, 0.0])
+        self.window = np.array([0.0, 0.0])
+        self.force_x = params["Disturbance"]["force_x"]
+        self.force_y = params["Disturbance"]["force_y"]
 
     def shift_wave_term(self):
         wave_force = 0.5 * np.random.normal()
