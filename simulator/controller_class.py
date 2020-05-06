@@ -6,7 +6,6 @@ Created on Sun Feb  2 14:53:49 2020
 """
 import math
 import time
-import json
 
 import numpy as np
 from geopy.distance import geodesic
@@ -17,9 +16,7 @@ import calculate_degree as cal_deg
 
 class Controller:
     def __init__(self, way_point):
-        params_file = open("params.json", "r")
-        params = json.load(params_file) 
-        self.tolerance = params["Controller"]["torelance"]
+        self.tolerance = 1.0
         self.way_point = way_point
         self.way_point_num = 0
         self.next_goal = self.way_point[self.way_point_num]
