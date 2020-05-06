@@ -17,12 +17,15 @@ import calculate_degree as cal_deg
 
 class Controller:
     def __init__(self, way_point):
-        params_file = open("params.json", "r")
-        params = json.load(params_file) 
-        self.tolerance = params["Controller"]["torelance"]
+        self.params_file = open("params.json", "r")
+        self.params = json.load(self.params_file) 
+        self.tolerance = self.params["Controller"]["torelance"]
         self.way_point = way_point
         self.way_point_num = 0
         self.next_goal = self.way_point[self.way_point_num]
+
+    def __del__(self):
+        self.params_file.close()
 
     def update_way_point(self):
         self.way_point_num = self.way_point_num + 1

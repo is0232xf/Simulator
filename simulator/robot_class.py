@@ -49,6 +49,9 @@ class Robot:
         self.gps = GPS(self.x, self.y)
         self.earth = Earth(self.y)
 
+    def __del__(self):
+        del self.gps
+
     def update_state(self, disturbance):
         force = self.thrust()
         yaw = self.yaw

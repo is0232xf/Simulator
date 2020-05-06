@@ -62,44 +62,52 @@ def calc_drag(F):
                  [D_r])
     return D
 """
-try:
-    Disturbance = Disturbance()
-    disturbance_force = np.array([[Disturbance.force_x],
-                                  [Disturbance.force_y],
-                                  [0.0]])
-    while True:
-        action = Controller.decide_next_action(Okebot)
-        if action[0] == "f":
-            break
-        pwm = Controller.update_pwm_pulse(action)
-        Okebot.update_pwm_pulse(pwm)
-        Okebot.update_state(disturbance_force)
-        target_point = Controller.next_goal
-        Okebot.gps.update_gps_value(Okebot.x, Okebot.y)
-        if file_log:
-            gt_log.append([target_point[0], target_point[1],
-                           Okebot.x, Okebot.y,
-                           math.degrees(Okebot.yaw)])
-            gps_log.append([target_point[0], target_point[1],
-                            Okebot.gps.longitude, Okebot.gps.latitude,
+
+def data_log(Disturbance, Controller, Robot):
+    for gt_log_data in gt_log:
+        gt_Writer.writerow(gt_log_data)
+    for gps_log_data in gps_log:
+        gps_Writer.writerow(gps_log_data)
+
+    ground_truth_data.close()
+    gps_data.close()
+
+    file_path_gt = dir_name + "/groud_truth.png"
+    file_path_gps = dir_name + "/gps.png"
+    plot_BIWAKO.make_figure(way_point_file, ground_truth_file, file_path_gt)
+    plot_BIWAKO.make_figure(way_point_file, gps_file, file_path_gps)
+
+    plot_BIWAKO.make_config_txt(dir_name)
+    del Disturbance
+    del Controller
+    del Robot
+
+if __name__ == "__main__":
+    try:
+        Disturbance = Disturbance()
+        disturbance_force = np.array([[Disturbance.force_x],
+                                    [Disturbance.force_y],
+                                    [0.0]])
+        while True:
+            action = Controller.decide_next_action(Okebot)
+            if action[0] == "f":
+                break
+            pwm = Controller.update_pwm_pulse(action)
+            Okebot.update_pwm_pulse(pwm)
+            Okebot.update_state(disturbance_force)
+            target_point = Controller.next_goal
+            Okebot.gps.update_gps_value(Okebot.x, Okebot.y)
+            if file_log:
+                gt_log.append([target_point[0], target_point[1],
+                            Okebot.x, Okebot.y,
                             math.degrees(Okebot.yaw)])
-    print("Mission complete")
-    if file_log:
-        for gt_log_data in gt_log:
-            gt_Writer.writerow(gt_log_data)
-        for gps_log_data in gps_log:
-            gps_Writer.writerow(gps_log_data)
-
-        ground_truth_data.close()
-        gps_data.close()
-
-        detail_data = [Controller.tolerance,Okebot.gps.e_mean,Okebot.gps.e_std_dev, Disturbance.force_y, Disturbance.force_x]
-
-        file_path_gt = dir_name + "/groud_truth.png"
-        file_path_gps = dir_name + "/gps.png"
-        plot_BIWAKO.make_figure(way_point_file, ground_truth_file, file_path_gt)
-        plot_BIWAKO.make_figure(way_point_file, gps_file, file_path_gps)
-except KeyboardInterrupt:
-    if file_log:
-        ground_truth_data.close()
-        gps_data.close()
+                gps_log.append([target_point[0], target_point[1],
+                                Okebot.gps.longitude, Okebot.gps.latitude,
+                                math.degrees(Okebot.yaw)])
+        print("Mission complete")
+        if file_log:
+            data_log(Disturbance, Controller, Okebot)
+    except KeyboardInterrupt:
+        print("Keyboard Interrupt!")
+        if file_log:
+            data_log(Disturbance, Controller, Okebot)

@@ -13,12 +13,15 @@ import numpy as np
 class Disturbance:
 
     def __init__(self):
-        params_file = open("params.json", "r")
-        params = json.load(params_file) 
+        self.params_file = open("params.json", "r")
+        self.params = json.load(self.params_file) 
         self.wave = np.array([0.0, 0.0])
         self.window = np.array([0.0, 0.0])
-        self.force_x = params["Disturbance"]["force_x"]
-        self.force_y = params["Disturbance"]["force_y"]
+        self.force_x = self.params["Disturbance"]["force_x"]
+        self.force_y = self.params["Disturbance"]["force_y"]
+
+    def __del__(self):
+        self.params_file.close()
 
     def shift_wave_term(self):
         wave_force = 0.5 * np.random.normal()

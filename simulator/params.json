@@ -9,7 +9,7 @@
     },
 
     "Disturbance":{
-    	"force_x": 0.20,
-    	"force_y": 0.20
+    	"force_x": 1.0,
+    	"force_y": 1.0
     }
 }
