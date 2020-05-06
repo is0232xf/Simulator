@@ -25,10 +25,10 @@ if file_log:
     # obtaine date time object for file name definition
     detail = datetime.datetime.now()
     date = detail.strftime("%Y_%m_%d_%H_%M_%S")
-    dir_name = "../../plot_data/" + date 
+    dir_name = "./data/plot_data/" + date 
     os.mkdir(dir_name)
-    ground_truth_file = '../../csv_data/'+ date +'_gt.csv' # open csv file
-    gps_file = '../../csv_data/'+ date +'_gps.csv' # open csv file
+    ground_truth_file = './data/csv/'+ date +'_gt.csv' # open csv file
+    gps_file = './data/csv/'+ date +'_gps.csv' # open csv file
     ground_truth_data = open(ground_truth_file, 'a', newline='')
     gps_data = open(gps_file, 'a', newline='')
     gt_Writer = csv.writer(ground_truth_data)

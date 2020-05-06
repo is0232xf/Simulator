@@ -91,3 +91,6 @@ ENV/
 
 # JSON files
 *.json
+
+# CSV, Plot data
+data/
