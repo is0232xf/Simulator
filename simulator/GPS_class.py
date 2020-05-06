@@ -7,13 +7,16 @@ from earth_class import Earth
 
 class GPS:
     def __init__(self, longitude, latitude):
-        params_file = open("params.json", "r")
-        params = json.load(params_file) 
+        self.params_file = open("params.json", "r")
+        self.params = json.load(self.params_file) 
         # Error model params
         self.longitude = longitude
         self.latitude = latitude
-        self.e_mean = params["GPS"]["e_mean"]
-        self.e_std_dev = params["GPS"]["e_std_dev"]
+        self.e_mean = self.params["GPS"]["e_mean"]
+        self.e_std_dev = self.params["GPS"]["e_std_dev"]
+
+    def __del__(self):
+        self.params_file.close()
 
     def update_gps_value(self, longitude, latitude):
         earth = Earth(latitude)
