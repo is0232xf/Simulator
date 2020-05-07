@@ -70,41 +70,44 @@ class Controller:
 
     def update_pwm_pulse(self, action):
         # update pwm pulse width for each thruster from the next action
+        high = 1650
+        low = 3000 - high
+        neutral = 1500
         if action[0] == "s" and action[1] == 0:
-            T1 = 1500
-            T2 = 1500
-            T3 = 1500
-            T4 = 1500
+            T1 = neutral
+            T2 = neutral
+            T3 = neutral
+            T4 = neutral
         elif action[0] == "x" and action[1] == 0:
-            T1 = 1600
-            T2 = 1600
-            T3 = 1400
-            T4 = 1400
+            T1 = high
+            T2 = high
+            T3 = low
+            T4 = low
         elif action[0] == "x" and action[1] == 1:
-            T1 = 1400
-            T2 = 1400
-            T3 = 1600
-            T4 = 1600
+            T1 = low
+            T2 = low
+            T3 = high
+            T4 = high
         elif action[0] == "y" and action[1] == 0:
-            T1 = 1600
-            T2 = 1400
-            T3 = 1600
-            T4 = 1400
+            T1 = high
+            T2 = low
+            T3 = high
+            T4 = low
         elif action[0] == "y" and action[1] == 1:
-            T1 = 1400
-            T2 = 1600
-            T3 = 1400
-            T4 = 1600
+            T1 = low
+            T2 = high
+            T3 = low
+            T4 = high
         elif action[0] == "r" and action[1] == 0:
-            T1 = 1600
-            T2 = 1400
-            T3 = 1400
-            T4 = 1600
+            T1 = high
+            T2 = low
+            T3 = low
+            T4 = high
         elif action[0] == "r" and action[1] == 1:
-            T1 = 1400
-            T2 = 1600
-            T3 = 1600
-            T4 = 1400
+            T1 = low
+            T2 = high
+            T3 = high
+            T4 = low
 
         T = np.array([[T1],
                       [T2],
