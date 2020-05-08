@@ -12,11 +12,11 @@ import time
 
 import numpy as np
 
-from disturbance_class import Disturbance
+from disturbance import Disturbance
 import plot_BIWAKO
-from controller_class import Controller
-from earth_class import Earth
-from robot_class import Robot
+from controller import Controller
+from earth import Earth
+from robot import Robot
 
 file_log = True
 

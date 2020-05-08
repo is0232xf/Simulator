@@ -70,7 +70,7 @@ class Controller:
 
     def update_pwm_pulse(self, action):
         # update pwm pulse width for each thruster from the next action
-        high = 1650
+        high = 1600
         low = 3000 - high
         neutral = 1500
         if action[0] == "s" and action[1] == 0:

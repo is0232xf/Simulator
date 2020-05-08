@@ -7,10 +7,10 @@ Created on Fri Nov 15 12:15:26 2019
 
 import math
 import numpy as np
-from earth_class import Earth
+from earth import Earth
 import matplotlib.patches as patches
-from thruster_class import Thruster
-from GPS_class import GPS
+from thruster import Thruster
+from GPS import GPS
 
 class Robot:
     def __init__(self, pose, color="black"):

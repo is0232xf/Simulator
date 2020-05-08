@@ -3,7 +3,7 @@ import json
 import random
 
 import numpy as np
-from earth_class import Earth
+from earth import Earth
 
 class GPS:
     def __init__(self, longitude, latitude):
