@@ -6,6 +6,7 @@ Created on Fri Nov 15 12:15:26 2019
 """
 
 import math
+import random
 import numpy as np
 from earth import Earth
 import matplotlib.patches as patches
@@ -53,7 +54,7 @@ class Robot:
         del self.gps
 
     def update_state(self, disturbance):
-        force = self.thrust()
+        force = self.thrust() # - drag force
         yaw = self.yaw
         self.earth.calc_ex(self.earth.ey)
         R = np.array([[math.cos(yaw), -math.sin(yaw)],
@@ -63,12 +64,19 @@ class Robot:
         F_t = np.array([[F[0][0]],
                         [F[1][0]]])
         F_v = np.dot(R, F_t)
+
+        # coefficient for generation random disturbance force 
+        k_x = random.uniform(-1.0, 1.0)
+        k_y = random.uniform(-1.0, 1.0)
+
+        disturbance_x = disturbance[0][0] * k_x
+        disturbance_y = disturbance[1][0] * k_y
         # 以下の3式の最終項の係数は現在てきとうに設定している
-        F_x = self.earth.ex * (F_v[0][0] - disturbance[1][0]) * 0.15 
-        F_y = self.earth.ey * (F_v[1][0] - disturbance[0][0]) * 0.15 
+        F_x = self.earth.ex * (F_v[0][0] - disturbance_x) * 0.15 
+        F_y = self.earth.ey * (F_v[1][0] - disturbance_y) * 0.15 
 
         F_r = math.radians(1.5) * F[2][0]
-        
+
         self.x = self.x + F_x
         self.y = self.y + F_y
         self.yaw = self.yaw + F_r

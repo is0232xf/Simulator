@@ -29,6 +29,7 @@ def make_figure(way_point, file, file_path):
 	    robot = DrawRobot(np.array([data[i][3], data[i][2], math.radians(data[i][4])]).T)
 	    world.append(robot)
 	    if i == len(data)-1:
+    		print(len(data)-1)
     		world.draw(file_path)
 
 def make_config_txt(dir_name):
