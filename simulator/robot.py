@@ -75,7 +75,7 @@ class Robot:
         F_x = self.earth.ex * (F_v[0][0] - disturbance_x) * 0.15 
         F_y = self.earth.ey * (F_v[1][0] - disturbance_y) * 0.15 
 
-        F_r = math.radians(1.5) * F[2][0]
+        F_r = math.radians(3.0) * F[2][0]
 
         self.x = self.x + F_x
         self.y = self.y + F_y

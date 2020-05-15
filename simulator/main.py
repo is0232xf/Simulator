@@ -18,7 +18,7 @@ from controller import Controller
 from earth import Earth
 from robot import Robot
 
-file_log = True
+file_log = False
 
 if file_log:
 #################################### set up for file log###################################
