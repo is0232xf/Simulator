@@ -9,6 +9,7 @@ import datetime
 import math
 import os
 import time
+import json
 
 import numpy as np
 
@@ -18,7 +19,9 @@ from controller import Controller
 from earth import Earth
 from robot import Robot
 
-file_log = False
+params_file = open("params.json", "r")
+params = json.load(params_file)
+file_log = params["Log"]["file_log"]
 
 if file_log:
 #################################### set up for file log###################################

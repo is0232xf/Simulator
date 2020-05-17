@@ -1,7 +1,7 @@
 {
     "GPS":{
-        "e_mean": 0.0,
-        "e_std_dev": 0.0
+        "e_mean": 8.6,
+        "e_std_dev": 26.7
     },
 
     "Controller":{
@@ -9,7 +9,11 @@
     },
 
     "Disturbance":{
-    	"force_x": 1.0,
-    	"force_y": 1.0
+    	"force_x": 10.0,
+    	"force_y": 10.0
+    },
+
+    "Log":{
+        "file_log": "True"
     }
 }
