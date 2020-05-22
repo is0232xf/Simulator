@@ -25,12 +25,11 @@ def make_figure(way_point, file, file_path):
 
 	world.append(robot)
 
-	for i in range(1, len(data)):
-	    robot = DrawRobot(np.array([data[i][3], data[i][2], math.radians(data[i][4])]).T)
-	    world.append(robot)
-	    if i == len(data)-1:
-    		print(len(data)-1)
-    		world.draw(file_path)
+	for i in range(1, len(data)-1):
+		robot = DrawRobot(np.array([data[i][3], data[i][2], math.radians(data[i][4])]).T)
+		world.append(robot)
+		new_file_path = file_path + str(i) + ".png"
+		world.draw(new_file_path)
 
 def make_config_txt(dir_name):
     import json

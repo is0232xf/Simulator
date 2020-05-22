@@ -25,6 +25,8 @@ class Controller:
         self.next_goal = self.way_point[self.way_point_num]
         self.diff_deg = 0.0
         self.pre_diff_deg = 0.0
+        self.diff_distance = 0.0
+        self.pre_diff_distance = 0.0
     def __del__(self):
         self.params_file.close()
 
@@ -39,9 +41,9 @@ class Controller:
         # decide the next action from current robot status and the next waypoint
         current_point = np.array([Okebot.gps.longitude, Okebot.gps.latitude])
         current_yaw = Okebot.yaw
-        diff_distance = geodesic(current_point, self.next_goal).m
+        self.diff_distance = geodesic(current_point, self.next_goal).m
         # check distance between current and target
-        if abs(diff_distance) < self.tolerance:
+        if abs(self.diff_distance) < self.tolerance:
             print("complete mission ", self.way_point_num)
             action = ["s", 0]
             if self.way_point_num < len(self.way_point)-1:
@@ -80,15 +82,19 @@ class Controller:
             T3 = neutral
             T4 = neutral
         elif action[0] == "x" and action[1] == 0:
-            T1 = high
-            T2 = high
-            T3 = low
-            T4 = low
+            freq = self.distance_PD_control()
+            freq_inv = 3000 - freq
+            T1 = freq
+            T2 = freq
+            T3 = freq_inv
+            T4 = freq_inv
         elif action[0] == "x" and action[1] == 1:
-            T1 = low
-            T2 = low
-            T3 = high
-            T4 = high
+            freq = self.distance_PD_control()
+            freq_inv = 3000 - freq
+            T1 = freq_inv
+            T2 = freq_inv
+            T3 = freq
+            T4 = freq
         elif action[0] == "y" and action[1] == 0:
             T1 = high
             T2 = low
@@ -130,4 +136,16 @@ class Controller:
         elif F > 1900:
             F = 1900
         self.pre_diff_deg = self.diff_deg
+        return F
+
+    def distance_PD_control(self):
+        Kp = 175.0
+        Kd = 800.0
+        accl = self.pre_diff_distance-self.diff_distance
+        F = Kp*self.diff_distance + Kd*accl
+        if F < 1530:
+            F = 1530
+        elif F > 1900:
+            F = 1900
+        self.pre_diff_distance = self.diff_distance
         return F

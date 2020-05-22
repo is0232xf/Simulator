@@ -75,8 +75,10 @@ def data_log(Disturbance, Controller, Robot):
     ground_truth_data.close()
     gps_data.close()
 
-    file_path_gt = dir_name + "/groud_truth.png"
-    file_path_gps = dir_name + "/gps.png"
+    file_path_gt = dir_name + "/groud_truth/"
+    file_path_gps = dir_name + "/gps/"
+    os.mkdir(file_path_gt)
+    os.mkdir(file_path_gps)
     plot_BIWAKO.make_figure(way_point_file, ground_truth_file, file_path_gt)
     plot_BIWAKO.make_figure(way_point_file, gps_file, file_path_gps)
 

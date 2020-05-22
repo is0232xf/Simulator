@@ -38,6 +38,7 @@ class World:
         plt.savefig(name)
         # plt.show()
         plt.clf()
+        plt.close()
 
     def plot_target_point(self, points, ax):
         for point in points:
